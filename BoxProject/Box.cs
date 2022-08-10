@@ -33,12 +33,16 @@ namespace BoxProject
         public void AddBoxQ(int num)
         {
             this.amountOfBoxs = amountOfBoxs + num;
-            _expierDate = DateTime.Now.AddMonths(1);
+            ExpireDateReset();
             Console.WriteLine($" you added {num} boxes \ncurrently have : {amountOfBoxs} boxes ");
         }
         public override string ToString()
         {
             return $"box size : {X} \nbox hight: {Y}\n boxes amount {amountOfBoxs}\n box expiredate: {_expierDate:d}";
+        }
+        public void ExpireDateReset()
+        {
+            this._expierDate = DateTime.Now.AddMonths(1);
         }
 
     }

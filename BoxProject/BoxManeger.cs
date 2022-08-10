@@ -62,15 +62,55 @@ namespace BoxProject
         {
             return (box.AmountOfBoxs > 0 && box.ExpierDate > DateTime.Now);
         }
-        
-        public void BuyBox()
+
+        public void BuyBox(double k, double v, int q, Action<object> action)
         {
-            
+            var innerTree = MainTree.TryFind(k);
+            if (innerTree is Tree<double, Box> treey)//we have the x exist
+            {
+
+                var innerBox = innerTree.TryFind(v);
+                if (innerBox is Box)// we have the y exist
+                {
+                    if (isBoxOk(innerBox))
+                    {
+                        if (innerBox.AmountOfBoxs >= q)
+                        {
+                            innerBox.AmountOfBoxs = innerBox.AmountOfBoxs - q;
+                            Console.WriteLine(innerBox);
+                            innerBox.ExpireDateReset();
+                            action.Invoke(innerBox.ToString());
+
+                        }
+                        else
+                        {
+                            string s = "\nnot enoth boxes";
+                            action.Invoke(s);
+
+                        }
+                    }
+
+
+                }
+                else
+                {
+                    string s = "\nproblom with box";
+                    action.Invoke(s);
+                }
+            }
+            else
+            {
+                string s = "\nbox not found: we will creat one for you next time :)";
+                action.Invoke(s);
+                AddBox(k,v,q);
+            }
+
+
         }
 
 
-
-
+    }
+}
         //purches box - remove n from boxes + restart expire date
 
         // if not enouth + not found correct box - search other compatible boxes from list (bigger boxes)
@@ -84,7 +124,4 @@ namespace BoxProject
         //to string - found +not found
         // modify box - add amount and restart expire date
         // to string  - all boxes
-
-    }
-}
 
